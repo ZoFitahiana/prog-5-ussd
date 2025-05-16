@@ -274,16 +274,20 @@ public class UssdApplication implements CommandLineRunner {
                                 null,
                                 input -> {
                                     if (!input.matches("\\d+")) {
-                                        System.out.println("Erreur : Le code doit être uniquement composé de chiffres.");
+                                        System.out.println(
+                                                "Erreur : Le code doit être uniquement composé de chiffres.");
                                         return false;
                                     }
                                     if (input.length() < 4) {
-                                        System.out.println("Erreur : Le code doit contenir au moins 4 chiffres.");
+                                        System.out.println(
+                                                "Erreur : Le code doit contenir au moins 4 chiffres.");
                                         return false;
                                     }
-                                    boolean hasTwoDifferentDigits = input.chars().distinct().count() >= 2;
+                                    boolean hasTwoDifferentDigits =
+                                            input.chars().distinct().count() >= 2;
                                     if (!hasTwoDifferentDigits) {
-                                        System.out.println("Erreur : Le code doit contenir au moins 2 chiffres différents.");
+                                        System.out.println(
+                                                "Erreur : Le code doit contenir au moins 2 chiffres différents.");
                                         return false;
                                     }
                                     return true;
@@ -306,12 +310,14 @@ public class UssdApplication implements CommandLineRunner {
                                     try {
                                         int montant = Integer.parseInt(input);
                                         if (montant <= 0) {
-                                            System.out.println("Erreur : Le montant doit être un nombre entier supérieur à 0.");
+                                            System.out.println(
+                                                    "Erreur : Le montant doit être un nombre entier supérieur à 0.");
                                             return false;
                                         }
                                         return true;
                                     } catch (NumberFormatException e) {
-                                        System.out.println("Erreur : Veuillez saisir un nombre entier valide.");
+                                        System.out.println(
+                                                "Erreur : Veuillez saisir un nombre entier valide.");
                                         return false;
                                     }
                                 })));
@@ -330,12 +336,11 @@ public class UssdApplication implements CommandLineRunner {
                                 montantMenu,
                                 input -> {
                                     if (!input.matches("\\d{10}")) {
-                                        System.out.println("Erreur : Le numéro doit contenir exactement 10 chiffres.");
+                                        System.out.println(
+                                                "Erreur : Le numéro doit contenir exactement 10 chiffres.");
                                         return false;
                                     }
                                     return true;
                                 })));
     }
-
-
 }

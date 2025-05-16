@@ -13,7 +13,8 @@ public class InputOption implements MenuOption {
         this(label, onInput, nextMenu, input -> true);
     }
 
-    public InputOption(String label, Consumer<String> onInput, Menu nextMenu, Predicate<String> validator) {
+    public InputOption(
+            String label, Consumer<String> onInput, Menu nextMenu, Predicate<String> validator) {
         this.label = label;
         this.onInput = onInput;
         this.nextMenu = nextMenu;

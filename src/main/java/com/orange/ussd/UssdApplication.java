@@ -257,7 +257,7 @@ public class UssdApplication implements CommandLineRunner {
 
     private void confirmCode() {
         System.out.println("Operation avec succès !");
-        System.out.println("Fin de la session USSD.");
+        System.out.println("Fin de la session USSD .");
         System.exit(0);
     }
 
@@ -271,7 +271,23 @@ public class UssdApplication implements CommandLineRunner {
                                     System.out.println("Code confirmé : " + input);
                                     confirmCode();
                                 },
-                                null)));
+                                null,
+                                input -> {
+                                    if (!input.matches("\\d+")) {
+                                        System.out.println("Erreur : Le code doit être uniquement composé de chiffres.");
+                                        return false;
+                                    }
+                                    if (input.length() < 4) {
+                                        System.out.println("Erreur : Le code doit contenir au moins 4 chiffres.");
+                                        return false;
+                                    }
+                                    boolean hasTwoDifferentDigits = input.chars().distinct().count() >= 2;
+                                    if (!hasTwoDifferentDigits) {
+                                        System.out.println("Erreur : Le code doit contenir au moins 2 chiffres différents.");
+                                        return false;
+                                    }
+                                    return true;
+                                })));
     }
 
     private Menu createMontantMenu(String context) {
@@ -282,9 +298,23 @@ public class UssdApplication implements CommandLineRunner {
                         new InputOption(
                                 "Saisir le montant",
                                 input -> {
-                                    System.out.println("Montant saisi : " + input);
+                                    int montant = Integer.parseInt(input);
+                                    System.out.println("Montant saisi : " + montant);
                                 },
-                                confirmationMenu)));
+                                confirmationMenu,
+                                input -> {
+                                    try {
+                                        int montant = Integer.parseInt(input);
+                                        if (montant <= 0) {
+                                            System.out.println("Erreur : Le montant doit être un nombre entier supérieur à 0.");
+                                            return false;
+                                        }
+                                        return true;
+                                    } catch (NumberFormatException e) {
+                                        System.out.println("Erreur : Veuillez saisir un nombre entier valide.");
+                                        return false;
+                                    }
+                                })));
     }
 
     private Menu createNumeroMenu(String context) {
@@ -297,6 +327,15 @@ public class UssdApplication implements CommandLineRunner {
                                 input -> {
                                     System.out.println("Numéro saisi : " + input);
                                 },
-                                montantMenu)));
+                                montantMenu,
+                                input -> {
+                                    if (!input.matches("\\d{10}")) {
+                                        System.out.println("Erreur : Le numéro doit contenir exactement 10 chiffres.");
+                                        return false;
+                                    }
+                                    return true;
+                                })));
     }
+
+
 }

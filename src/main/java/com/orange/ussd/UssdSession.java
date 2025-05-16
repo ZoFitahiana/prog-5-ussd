@@ -28,11 +28,13 @@ public class UssdSession {
 
     public void handleInput(String input) {
         if (waitingInputOption != null) {
-            waitingInputOption.handleInput(input);
-            if (waitingInputOption.getSubMenu() != null) {
-                currentMenu = waitingInputOption.getSubMenu();
+            boolean valid = waitingInputOption.handleInput(input);
+            if (valid) {
+                if (waitingInputOption.getSubMenu() != null) {
+                    currentMenu = waitingInputOption.getSubMenu();
+                }
+                waitingInputOption = null;
             }
-            waitingInputOption = null;
             return;
         }
 
